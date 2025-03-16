@@ -42,7 +42,7 @@ function startGuessQuoteGame() {
     <h2>"${selectedQuote.quote}"</h2>
   `;
 
-  generateOptions(selectedQuote);
+  generateOptions(selectedQuote.author);
 }
 
 // Multiple Choce Options Function
