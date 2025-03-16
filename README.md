@@ -1,1 +1,1 @@
-# Breaking Bad App
+# Rick-Morty-Game Application
