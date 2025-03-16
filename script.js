@@ -1,48 +1,60 @@
-
 // Fetch & Display a Random Character Function
 document.getElementById("randomCharacterBtn").addEventListener("click", getRandomCharacter);
 
 async function getRandomCharacter() {
-  const response = await fetch("https://www.breakingbadapp.com/api/characters");
-  const characters = await response.json();
-
-  const randomIndex = Math.floor(Math.random() * characters.length);
-  const character = characters[randomIndex];
-
-  document.getElementById("characterContainer").innerHTML = `
-    <h2>${character.name}</h2>
-    <img src="${character.img}" alt="${character.name}">
-    <p><strong>Occupation:</strong> ${character.occupation.join(", ")}</p>
-    <p><strong>Status:</strong> ${character.status}</p>
-    <p><strong>Portrayed by:</strong> ${character.portrayed}</p>
-  `;
+  try {
+    const response = await fetch("https://rickandmortyapi.com/api/character");
+    const data = await response.json();
+  
+    const randomIndex = Math.floor(Math.random() * data.results.length);
+    const character = data.results[randomIndex];
+  
+    document.getElementById("characterContainer").innerHTML = `
+      <h2>${character.name}</h2>
+      <img src="${character.img}" alt="${character.name}">
+      <p><strong>Status:</strong> ${character.status}</p>
+      <p><strong>Species:</strong> ${character.species}</p>
+      <p><strong>Locatioin:</strong> ${character.location.name}</p>
+    `;
+  } catch (error) {
+    console.error("Error fetching characters:", error);
+  }
 }
 
-// Fetch & Display Random Quote Function
+// Hardcoded Rick & Morty Quotes
+const rickAndMortyQuotes = [
+  { quote: "Wubba Lubba Dub Dub!", author: "Rick Sanchez" },
+  { quote: "I'm Pickle Rick!", author: "Rick Sanchez" },
+  { quote: "Get Schwifty!", author: "Rick Sanchez" },
+  { quote: "Nothing matters, nobody exists on purpose.", author: "Morty Smith" },
+  { quote: "Sometimes science is more art than science.", author: "Rick Sanchez" },
+  { quote: "Nobody exists on purpose. Nobody belongs anywhere. We’re all going to die.", author: "Morty Smith" }
+];
+
+// Fetch and Display a Random Quote
 document.getElementById("startGameBtn").addEventListener("click", startGuessQuoteGame);
 
-async function startGuessQuoteGame() {
-  const response = await fetch("https://www.breakingbadapi.com/api/quote/random");
-  const quoteData = await response.json();
-  const quote = quoteData[0];
+function startGuessQuoteGame() {
+  const randomIndex = Math.floor(Math.random() * rickAndMortyQuotes.length);
+  const selectedQuote = rickAndMortyQuotes[randomIndex];
 
-  document.getElementById("quoteContainer").innerHTML =  `
-    <h2>"${quote.quote}"</h2>
+  document.getElementById("quoteContainer").innerHTML =   `
+    <h2>"${selectedQuote.quote}"</h2>
   `;
 
-  generateOptions(quote.author);
+  generateOptions(selectedQuote);
 }
 
 // Multiple Choce Options Function
 async function generateOptions(correctAnswer) {
-  const response = await fetch("https://www.breakingbadapi.com/api/characters");
+  const response = await fetch("https://rickandmortyapi.com/api/character");
   const characters = await response.json();
 
   let options = [correctAnswer];
 
   while (options.length < 4) {
-    let randomCharacter = characters[Math.floor(Math.random() * characters.length)].name;
-    if (!options.push(randomCharacter)){
+    let randomCharacter = characters.results[Math.floor(Math.random() * characters.results.length)].name;
+    if (!options.includes(randomCharacter)){
       options.push(randomCharacter);
     }
   }
