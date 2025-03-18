@@ -21,10 +21,20 @@ button {
 }
 
 #optionsContainer {
-  display: block;
-  margin: 10px auto;
-  padding: 10px;
-  width: 200px;
-  font-size: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-items: center;
+  margin-top: 20px;
 }
+
+#optionsContainer div {
+  border: 1px solid #00ff00;
+  border-radius: 10px;
+  padding: 8px;
+  width: 140px;
+  text-align: center;
+}
+
+
 
