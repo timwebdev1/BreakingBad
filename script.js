@@ -117,15 +117,22 @@ function generateOptions(correctAnswer, allCharacters) {
 
 // ===== CHECK ANSWER & DISPLAY RESULT ON PAGE =====
 function checkAnswer(selected, correct) {
-  const resultContainer = document.getElementById("resultContainer");
+  const optionButtons = document.querySelectorAll("#optionsContainer button");
 
-  if (selected === correct) {
-    resultContainer.innerHTML = `
-      <p style="color: green; font-size: 20px;">✅ Correct! ${correct} said: "${document.getElementById("quoteContainer").textContent}"</p>
-    `;
-  } else {
-    resultContainer.innerHTML = `
-      <p style="color: red; font-size: 20px;">❌ Wrong! The correct answer was: ${correct}</p>
-    `;
-  }
+  optionButtons.forEach(btn => {
+    btn.disabled = true; // Disables buttons after selection
+    if (btn.textContent === correct) {
+      btn.style.backgroundColor = "green";
+    } else if (btn.textContent === selected) {
+      btn.style.backgroundColor = "red";
+    }
+  });
+
+  const resultMessage = selected === correct     
+  ? `✅ Correct! The answer was: ${correct}`
+  : `❌ Wrong! The correct answer was: ${correct}`;
+
+  document.getElementById("resultContainer").innerHTML = `
+  <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${resultMessage}</p>
+  `;
 }
